@@ -65,3 +65,173 @@ pip install -r requirements.txt
 uvicorn main: null --reload --host 0.0.0.0 --port 8000
 4.Open API docs
 Visit: http://localhost:8000/docs
+
+
+## API docs
+POST /analyze
+
+Analyze a keyword and return trend metadata.
+
+Request JSON
+
+{
+  "keyword": "AI jobs"
+}
+
+
+Response JSON
+
+{
+  "trend": "Rising",
+  "score": 78,
+  "confidence": "High",
+  "best_posting_time": "7 PM – 10 PM",
+  "related_keywords": ["AI roadmap","AI salary","Prompt engineering"],
+  "graph_data": [12, 18, 24, 32, 40, 51, 72]
+}
+
+## Example requests & responses
+curl
+curl -X POST "https://trendpulse-backend-vmr1.onrender.com/analyze" \
+  -H "Content-Type: application/json" \
+  -d '{"keyword":"AI jobs"}'
+
+Python example
+import requests
+
+url = "https://trendpulse-backend-vmr1.onrender.com/analyze"
+resp = requests.post(url, json={"keyword": "AI jobs"})
+print(resp.json())
+
+## Math model — how it works
+
+We use the slope of a linear regression line across the last 7 days of Google Trends values to quantify momentum.
+x = {1, 2, 3, 4, 5, 6, 7}
+y = {y1, y2, y3, y4, y5, y6, y7}
+
+$$
+m = \frac{n\sum xy - (\sum x)(\sum y)}
+         {n\sum x^2 - (\sum x)^2}
+$$
+
+Rising      → m > 0.8  
+Stable      → -0.8 ≤ m ≤ 0.8  
+Declining   → m < -0.8
+
+$$
+score = round( min( max(m \times 12 + 50,\ 0),\ 100 ) )
+$$
+High     → |m| > 1.2  
+Medium   → 0.6 < |m| ≤ 1.2  
+Low      → |m| ≤ 0.6  
+
+
+## Deployment (Render)
+
+If you want to deploy the backend on Render (recommended — always on):
+
+Push your code to GitHub.
+
+Go to https://render.com
+ → New → Web Service.
+
+Connect the repo and set:
+
+Build Command: pip install -r requirements.txt
+
+Start Command: uvicorn main:app --host 0.0.0.0 --port $PORT
+
+Deploy. After build succeeds, Render will give you a stable URL (e.g. https://trendpulse-backend-vmr1.onrender.com).
+
+No environment variables required for the MVP (pytrends uses public Google Trends). If you add paid APIs later, store keys as Render environment variables.
+
+## Frontend integration (Lovable)
+
+In Lovable, create an API block.
+
+Method: POST
+
+URL:
+
+https://trendpulse-backend-vmr1.onrender.com/analyze
+
+
+Headers:
+
+Content-Type: application/json
+
+
+Body:
+
+{ "keyword": "{{input_keyword}}" }
+
+
+Map response fields:
+
+trend → label
+
+score → numeric display
+
+confidence → text
+
+best_posting_time → text
+
+related_keywords → chips
+
+graph_data → Lovable line chart
+
+Test with example keywords (see test pack below).
+
+Testing keywords (recommended demo pack)
+
+Use these to show Rising / Stable / Declining cases quickly:
+
+Rising: "AI agents", "K-pop comeback"
+
+Stable: "Python programming", "Weather today"
+
+Declining: "NFT art", "Clubhouse app"
+
+These generally produce clean, demonstrable outputs for the judges.
+
+##Troubleshooting & tips
+
+405 Method Not Allowed → Make sure Lovable sends POST, not GET.
+
+Rate limiting from Google Trends → Use caching in backend; reuse a single TrendReq() session; add small cooldowns if needed.
+
+Replit sleep → Deploy to Render (recommended) to avoid manual “Run”.
+
+Graph format issues → Ensure graph_data is a numeric array (7 integers/floats) and Lovable graph expects that same shape.
+
+Recommended caching pattern (pseudo):
+cache = {}
+if keyword in cache:
+    return cache[keyword]
+# else: fetch, compute, cache[keyword] = result
+
+## Contributing
+
+Contributions are welcome — open a PR or issue with:
+
+performance improvements
+
+smarter smoothing or forecasting (Prophet/ARIMA)
+
+multi-platform trend aggregation
+
+UI polish or test coverage
+
+Please fork, create a feature branch, and open a PR. Keep changes well-scoped.
+
+## License
+
+MIT License — feel free to reuse for your hacks and prototypes.
+
+Contact
+
+Built by Swathi for Octopus Hackathon — reach out for help, improvements, or collab ideas.
+
+
+Tell me which and I’ll drop it instantly.
+::contentReference[oaicite:0]{index=0}
