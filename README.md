@@ -20,7 +20,7 @@ TrendPulse AI is a lightweight trend-prediction API + frontend MVP that converts
 ## Live demo
 - Backend (always-on): `https://trendpulse-backend-vmr1.onrender.com`  
 - API endpoint: `POST https://trendpulse-backend-vmr1.onrender.com/analyze`  
-> (Frontend URL: hosted via Lovable/Vercel — ask your team for the published domain)
+> (Frontend URL: hosted via Vercel — https://trendpulseai.vercel.app/)
 
 ---
 
