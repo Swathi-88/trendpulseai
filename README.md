@@ -194,7 +194,7 @@ Declining: "NFT art", "Clubhouse app"
 
 These generally produce clean, demonstrable outputs for the judges.
 
-##Troubleshooting & tips
+## Troubleshooting & tips
 
 405 Method Not Allowed → Make sure Lovable sends POST, not GET.
 
@@ -208,8 +208,8 @@ Recommended caching pattern (pseudo):
 cache = {}
 if keyword in cache:
     return cache[keyword]
-# else: fetch, compute, cache[keyword] = result
-
+ else: fetch, compute, cache[keyword] = result
+ 
 ## Contributing
 
 Contributions are welcome — open a PR or issue with:
