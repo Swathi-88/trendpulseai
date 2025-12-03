@@ -66,7 +66,7 @@ uvicorn main: null --reload --host 0.0.0.0 --port 8000
 4.Open API docs
 Visit: http://localhost:8000/docs
 
-
+```
 ## API docs
 POST /analyze
 
@@ -232,6 +232,4 @@ Contact
 
 Built by Swathi for Octopus Hackathon — reach out for help, improvements, or collab ideas.
 
-
-Tell me which and I’ll drop it instantly.
-::contentReference[oaicite:0]{index=0}
+```
