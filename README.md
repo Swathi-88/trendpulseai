@@ -54,7 +54,7 @@ TrendPulse AI is a lightweight trend-prediction API + frontend MVP that converts
 
 1. Clone the repo
 ```bash
-git clone https://github.com/<your-org>/trendpulse-backend.git
+git clone https://github.com/Swathi-88/trendpulse-backend.git
 cd trendpulse-backend
 2. Create a venv & install
 python -m venv .venv
